@@ -146,7 +146,7 @@ div.field, div.actions {
 }
 
 .field_with_errors label {
-	color: #fff;
+	color: #000000;
 }
 
 #error_explanation {

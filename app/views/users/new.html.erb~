@@ -1,9 +1,8 @@
 <h1> Sign up </h1>
 
 <%= form_for(@user) do |f| %>
-	<% if @users.errors.any? %>
-		print "done"
-	<% end %>
+	
+	<%= render 'shared/error_messages' %>
 
 	<div class = "field">
 		<%= f.label :name %><br />

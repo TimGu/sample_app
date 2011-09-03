@@ -40,7 +40,7 @@ describe UsersController do
 			  @users[0..2].each do |user|
 				  response.should have_selector("li", :content => user.name)
 			  end
-		  end
+		  end 
 
 		  it "should paginate users" do
 			  get :index
@@ -307,14 +307,21 @@ describe UsersController do
 	  describe "as an admin user" do
 
 		  before(:each) do
-			  admin = Factory(:user, :email => "admin@example.com", :admin => true)
-			  test_sign_in(admin)
+			  @admin = Factory(:user, :email => "admin@example.com", :admin => true)
+			  test_sign_in(@admin)
 		  end
 
 		  it "should destroy the user" do
 			  lambda do
 				  delete :destroy, :id => @user
 			  end.should change(User,  :count).by(-1)
+		  end
+		  
+		  it "should not destroy the admin user itself" do
+			lambda do
+				delete :destroy, :id => @admin
+			end.should_not change(User, :count)
+			response.should redirect_to(users_path)
 		  end
 
 		  it "should redirect to the users page" do
@@ -323,5 +330,25 @@ describe UsersController do
 		  end
 	   end
    end
-end
 
+   describe "new/create pages for signed-in users" do
+   	before(:each) do
+		@user = Factory(:user)
+		test_sign_in(@user)
+	end
+
+	it "should re-route signed-in user to root for 'new'" do
+		get :new
+		response.should redirect_to(root_path)
+		flash[:info].should =~/You're already logged in/i
+	end
+
+	
+	it "should re-route signed-in user to root for 'create'" do
+		@attr = { :name => "New User", :email => "user@example.com", :password => "foobar", :password_confirmation => "foobar" }
+		post :create, :user => @attr
+		response.should redirect_to(root_path)
+		flash[:info].should =~/You're already logged in/i
+	end
+   end
+end

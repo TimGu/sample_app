@@ -187,8 +187,3 @@ ul.users {
 	list-style: none;
 }
 
-
-.users li {
-	list-style: none;
-}
-

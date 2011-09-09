@@ -4,15 +4,15 @@ namespace :db do
 		Rake::Task['db:reset'].invoke
 		make_users
 		make_microposts
-		make_relationships	
+		#make_relationships	
 	end
 end
 
 def make_users
 	admin = User.create!(:name => "Tim Gu", 
 			     :email => "xin.tim.gu@gmail.com",
-			     :password => "Gutec12",
-			     :password_confirmation => "Gutec12")
+			     :password => "guber",
+			     :password_confirmation => "guber")
 		admin.toggle!(:admin)
 		1.times do |n|
 			name = Faker::Name.name
